@@ -1,4 +1,4 @@
-package sample.Tests.GUIexamples;//Import packages
+package main.Tests.GUIexamples;//Import packages
 
 import javax.swing.*;
 import java.awt.*;

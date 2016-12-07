@@ -1,13 +1,11 @@
-package sample.Tests.CrawlerExamples.TestCrawler;/*
-package CrawlerExamples.TestCrawler;
+package main.Tests.CrawlerExamples;
 
-import java.net.*;
-import java.io.*;
+public class TestCrawler6{
 
-public class Crawler{
-    public static void main(String[] args) throws Exception{
+ /*   public static void main(String[] args) throws Exception{
+
         String urls[] = new String[1000];
-        String url = "http://www.neti.ee";
+        String url = "http://www.nandal.in";
         int i=0,j=0,tmp=0,total=0, MAX = 1000;
         int start=0, end=0;
         String webpage = Web.getWeb(url);
@@ -25,9 +23,7 @@ public class Crawler{
                     System.out.println("Exception caught \n"+e);
                 }
 
-            */
-/*logic to fetch urls out of body of webpage only *//*
-
+            *//*logic to fetch urls out of body of webpage only *//*
                 end = webpage.indexOf("<body");
                 if(end == -1){
                     end = start = 0;
@@ -49,10 +45,8 @@ public class Crawler{
 
 
 
-*/
-/*This class contains a static function which will fetch the webpage
+*//*This class contains a static function which will fetch the webpage
   of the given url and return as a string *//*
-
 class Web{
     public static String getWeb(String address)throws Exception{
         String webpage = "";
@@ -64,6 +58,5 @@ class Web{
             webpage += inputLine;
         in.close();
         return webpage;
-    }
+    }*/
 }
-*/

@@ -1,4 +1,4 @@
-package sample.Tests.CrawlerExamples.Crawler2;
+package main.Tests.CrawlerExamples.Crawler2;
 
 import java.io.*;
 import java.net.MalformedURLException;

@@ -1,4 +1,4 @@
-package sample.Tests.CrawlerExamples;
+package main.Tests.CrawlerExamples;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

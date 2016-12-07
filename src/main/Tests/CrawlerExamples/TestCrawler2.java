@@ -1,4 +1,4 @@
-package sample.Tests.CrawlerExamples;
+package main.Tests.CrawlerExamples;
 
 public class TestCrawler2 {
 

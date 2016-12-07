@@ -1,4 +1,4 @@
-package sample.Tests;
+package main.Tests;
 
 /**
  * Copyright (c) 2008, 2012 Oracle and/or its affiliates.
