@@ -155,10 +155,10 @@ public class Main extends Application {
         GridPane.setConstraints(acctLabel, 0, 1);*/
         TextField textBox = new TextField("Insert Link here");
         GridPane.setMargin(textBox, new Insets(10, 10, 10, 10));
-        GridPane.setConstraints(textBox, 1, 1);
+        GridPane.setConstraints(textBox, 0, 0);
 
         Button button = new Button("Search");
-        GridPane.setConstraints(button, 2, 1);
+        GridPane.setConstraints(button, 1, 0);
         GridPane.setMargin(button, new Insets(10, 10, 10, 10));
         GridPane.setHalignment(button, HPos.CENTER);
 
