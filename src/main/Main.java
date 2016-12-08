@@ -101,8 +101,10 @@ public class Main extends Application {
         Label grid3Caption = new Label("Result table:");
         grid3Caption.setWrapText(true);
         GridPane grid3 = new GridPane();
+    }
+        //Result table
 
-        final ObservableList<Main.Person> data = FXCollections.observableArrayList();
+/*        final ObservableList<Main.Person> data = FXCollections.observableArrayList();
         TableColumn linkCol = new TableColumn();
         linkCol.setText("Links");
         linkCol.setMinWidth(200);
@@ -112,28 +114,12 @@ public class Main extends Application {
         tableView.getColumns().addAll(linkCol);
         root.getChildren().add(tableView);
 
-/*        GridPane.setConstraints(linkCol, 0, 0);
-        grid3.getChildren().addAll(linkCol);*/
+        GridPane.setConstraints(linkCol, 0, 0);
+        grid3.getChildren().addAll(linkCol);
 
         vbox.getChildren().addAll(grid3Caption, grid3);
 
-    }
-
-    public static class Person {
-        private StringProperty firstName;
-        private StringProperty lastName;
-        private StringProperty email;
-
-        private Person(String fName, String lName, String email) {
-            this.firstName = new SimpleStringProperty(fName);
-            this.lastName = new SimpleStringProperty(lName);
-            this.email = new SimpleStringProperty(email);
-        }
-
-        public StringProperty firstNameProperty() { return firstName; }
-        public StringProperty lastNameProperty() { return lastName; }
-        public StringProperty emailProperty() { return email; }
-    }
+    }*/
 
         //Start search with button
 /*        button.setOnAction(new EventHandler<ActionEvent>() {
