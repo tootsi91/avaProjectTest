@@ -13,27 +13,44 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import main.Tests.GUIexamples.JavaFX.TableSample;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
+import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.io.*;
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import static com.sun.java.accessibility.util.AWTEventMonitor.addActionListener;
+
 public class Main extends Application {
 
-    public static void main(String[] args) throws Exception{
+    private FileCrawler crawler;
+
+    public static void main(String[] args) throws Exception {
         launch(args);
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
 
         init(primaryStage);
         primaryStage.show();
     }
-
 
     //GUI
     private void init(Stage primaryStage) {
@@ -88,6 +105,31 @@ public class Main extends Application {
         GridPane.setConstraints(textBox, 0, 0);
 
         Button button = new Button("Search");
+        button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                try {
+                    processPage("www.neti.ee");
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
+                /*label.setText("Searching")*/;
+            }
+
+
+        });
+
+        /*DropShadow shadow = new DropShadow();
+        //Adding the shadow when the mouse cursor is on
+        button.addEventHandler(MouseEvent.MOUSE_ENTERED,
+                (EventHandler<MouseEvent>) e -> button.setEffect(shadow));
+        //Removing the shadow when the mouse cursor is off
+        button.addEventHandler(MouseEvent.MOUSE_EXITED,
+                new EventHandler<MouseEvent>() {
+                    @Override public void handle(MouseEvent e) {
+                        button.setEffect(null);
+                    }
+                });*/
         GridPane.setConstraints(button, 1, 0);
         GridPane.setMargin(button, new Insets(10, 10, 10, 10));
         GridPane.setHalignment(button, HPos.CENTER);
@@ -102,6 +144,109 @@ public class Main extends Application {
         grid3Caption.setWrapText(true);
         GridPane grid3 = new GridPane();
     }
+
+    private URL verifyUrl(String url) {
+        // Only allow HTTP URLs.
+        if (!url.toLowerCase().startsWith("http://"))
+            return null;
+        // Verify format of URL.
+        URL verifiedUrl = null;
+        try {
+            verifiedUrl = new URL(url);
+        } catch (Exception e) {
+            return null;
+        }
+        return verifiedUrl;
+    }
+
+
+    public static boolean checkExist(String s, File fin) throws IOException {
+
+        FileInputStream fis = new FileInputStream(fin);
+        // //Construct the BufferedReader object
+        BufferedReader in = new BufferedReader(new InputStreamReader(fis));
+
+        String aLine = null;
+        while ((aLine = in.readLine()) != null) {
+            // //Process each line
+            if (aLine.trim().contains(s)) {
+                //System.out.println("contains " + s);
+                in.close();
+                fis.close();
+                return true;
+            }
+        }
+
+        in.close();
+        fis.close();
+
+        return false;
+    }
+
+
+    public static void processPage(String URL) throws IOException {
+
+        File dir = new File(".");
+        String loc = dir.getCanonicalPath() + File.separator + "record.txt";
+
+        // invalid link
+        if (URL.contains(".pdf") || URL.contains("@")
+                || URL.contains("adfad") || URL.contains(":80")
+                || URL.contains("fdafd") || URL.contains(".jpg")
+                || URL.contains(".pdf") || URL.contains(".jpg"))
+            return;
+
+        // process the url first
+        if (URL.contains("www.neti.ee") && !URL.endsWith("/")) {
+
+        } else if (URL.contains("www.neti.ee") && URL.endsWith("/")) {
+            URL = URL.substring(0, URL.length() - 1);
+        } else {
+            // url of other site -> do nothing
+            return;
+        }
+
+        File file = new File(loc);
+
+        // check existance
+        boolean e = checkExist(URL, file);
+        if (!e) {
+            System.out.println("------ :  " + URL);
+            // insert to file
+            FileWriter fstream = new FileWriter(loc, true);
+            BufferedWriter out = new BufferedWriter(fstream);
+            out.write(URL);
+            out.newLine();
+            out.close();
+
+            Document doc = null;
+            try {
+                doc = Jsoup.connect(URL).get();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+                return;
+            }
+
+            if (doc.text().contains("PhD")) {
+                //System.out.println(URL);
+            }
+
+            Elements questions = doc.select("a[href]");
+            for (Element link : questions) {
+                processPage(link.attr("abs:href"));
+            }
+        } else {
+            // do nothing
+            return;
+        }
+    }
+
+}
+
+
+/*    private void actionSearch() {
+
+    }*/
         //Result table
 
 /*        final ObservableList<Main.Person> data = FXCollections.observableArrayList();
@@ -120,13 +265,6 @@ public class Main extends Application {
         vbox.getChildren().addAll(grid3Caption, grid3);
 
     }*/
-
-        //Start search with button
-/*        button.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent event) {
-                button.setIconified(true);
-            }
-        });*/
 
         /*    private void actionSearch() {
                 // If stop button clicked, turn crawling flag off.
@@ -185,41 +323,4 @@ public class Main extends Application {
                 search(logFile, startUrl, maxUrls, searchString);
             }*/
 
-/*      //Search method
-        String urls[] = new String[1000];
-        String url = "http://www.neti.ee";
-        int i=0,j=0,tmp=0,total=0, MAX = 1000;
-        int start=0, end=0;
-        String webpage = Web.getWeb(url);
-        end = webpage.indexOf("<body");
-        for(i=total;i<MAX; i++, total++){
-            start = webpage.indexOf("http://", end);
-            if(start == -1){
-                start = 0;
-                end = 0;
-                try{
-                    webpage = Web.getWeb(urls[j++]);
-                }catch(Exception e){
-                    System.out.println("******************");
-                    System.out.println(urls[j-1]);
-                    System.out.println("Exception caught \n"+e);
-                }
 
-                //logic to fetch urls out of body of webpage only
-                end = webpage.indexOf("<body");
-                if(end == -1){
-                    end = start = 0;
-                    continue;
-                }
-            }
-            end = webpage.indexOf("\"", start);
-            tmp = webpage.indexOf("'", start);
-            if(tmp < end && tmp != -1){
-                end = tmp;
-            }
-*//*            url = webpage.substring(start, end);
-            urls[i] = url;
-            System.out.println(urls[i]);*//*
-        }*/
-
-}
