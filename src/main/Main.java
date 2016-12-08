@@ -1,18 +1,25 @@
 package main;
 
 import javafx.application.Application;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Separator;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import main.Tests.GUIexamples.JavaFX.TableSample;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class Main extends Application {
 
@@ -65,17 +72,17 @@ public class Main extends Application {
 
         vbox.getChildren().addAll(grid1Caption, grid1, new Separator());
 
-        Label grid3Caption = new Label("Insert the name of the webpage you want to search below:");
-        grid3Caption.setWrapText(true);
-        GridPane grid3 = new GridPane();
-        grid3.setPadding(new Insets(18, 18, 18, 18));
-        grid3.setGridLinesVisible(true);
+        Label grid2Caption = new Label("Insert the name of the webpage you want to search below:");
+        grid2Caption.setWrapText(true);
+        GridPane grid2 = new GridPane();
+        grid2.setPadding(new Insets(18, 18, 18, 18));
+        grid2.setGridLinesVisible(true);
         RowConstraints rowinfo2 = new RowConstraints();
         rowinfo2.setPercentHeight(50);
         ColumnConstraints colInfo2 = new ColumnConstraints();
         colInfo2.setPercentWidth(50);
-        grid3.getRowConstraints().add(rowinfo2);
-        grid3.getColumnConstraints().add(colInfo2);
+        grid2.getRowConstraints().add(rowinfo2);
+        grid2.getColumnConstraints().add(colInfo2);
         TextField textBox = new TextField("Insert Link here");
         GridPane.setMargin(textBox, new Insets(10, 10, 10, 10));
         GridPane.setConstraints(textBox, 0, 0);
@@ -85,15 +92,112 @@ public class Main extends Application {
         GridPane.setMargin(button, new Insets(10, 10, 10, 10));
         GridPane.setHalignment(button, HPos.CENTER);
 
+        grid2.getChildren().addAll(button, textBox);
 
-        grid3.getChildren().addAll(button, textBox);
-
-        vbox.getChildren().addAll(grid3Caption, grid3);
+        vbox.getChildren().addAll(grid2Caption, grid2);
 
         root.getChildren().add(vbox);
 
+        Label grid3Caption = new Label("Result table:");
+        grid3Caption.setWrapText(true);
+        GridPane grid3 = new GridPane();
+
+        final ObservableList<Main.Person> data = FXCollections.observableArrayList();
+        TableColumn linkCol = new TableColumn();
+        linkCol.setText("Links");
+        linkCol.setMinWidth(200);
+        linkCol.setCellValueFactory(new PropertyValueFactory("Links"));
+        TableView tableView = new TableView();
+        tableView.setItems(data);
+        tableView.getColumns().addAll(linkCol);
+        root.getChildren().add(tableView);
+
+/*        GridPane.setConstraints(linkCol, 0, 0);
+        grid3.getChildren().addAll(linkCol);*/
+
+        vbox.getChildren().addAll(grid3Caption, grid3);
+
     }
 
+    public static class Person {
+        private StringProperty firstName;
+        private StringProperty lastName;
+        private StringProperty email;
+
+        private Person(String fName, String lName, String email) {
+            this.firstName = new SimpleStringProperty(fName);
+            this.lastName = new SimpleStringProperty(lName);
+            this.email = new SimpleStringProperty(email);
+        }
+
+        public StringProperty firstNameProperty() { return firstName; }
+        public StringProperty lastNameProperty() { return lastName; }
+        public StringProperty emailProperty() { return email; }
+    }
+
+        //Start search with button
+/*        button.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                button.setIconified(true);
+            }
+        });*/
+
+        /*    private void actionSearch() {
+                // If stop button clicked, turn crawling flag off.
+                if (crawling) {
+                    crawling = false;
+                    return;
+                }
+                ArrayList errorList = new ArrayList();
+                // Validate that start URL has been entered.
+                String startUrl = startTextField.getText().trim();
+                if (startUrl.length() < 1) {
+                    errorList.add("Missing Start URL.");
+                }
+                // Verify start URL.
+                else if (verifyUrl(startUrl) == null) {
+                    errorList.add("Invalid Start URL.");
+                }
+                // Validate that Max URLs is either empty or is a number.
+                int maxUrls = 0;
+                String max = ((String) maxComboBox.getSelectedItem()).trim();
+                if (max.length() > 0) {
+                    try {
+                        maxUrls = Integer.parseInt(max);
+                    } catch (NumberFormatException e) {
+                    }
+                    if (maxUrls < 1) {
+                        errorList.add("Invalid Max URLs value.");
+                    }
+                }
+                // Validate that matches log file has been entered.
+                String logFile = logTextField.getText().trim();
+                if (logFile.length() < 1) {
+                    errorList.add("Missing Matches Log File.");
+                }
+                // Validate that search string has been entered.
+                String searchString = searchTextField.getText().trim();
+                if (searchString.length() < 1) {
+                    errorList.add("Missing Search String.");
+                }
+                // Show errors, if any, and return.
+                if (errorList.size() > 0) {
+                    StringBuffer message = new StringBuffer();
+                    // Concatenate errors into single message.
+                    for(int i=0;i<errorList.size(); i++) {
+                        message.append(errorList.get(i));
+                        if(i+1<errorList.size()) {
+                            message.append("\n");
+                        }
+                    }
+                    showError(message.toString());
+                    return;
+                }
+                // Remove "www" from start URL if present.
+                startUrl = removeWwwFromUrl(startUrl);
+                // Start the Search Crawler.
+                search(logFile, startUrl, maxUrls, searchString);
+            }*/
 
 /*      //Search method
         String urls[] = new String[1000];
