@@ -1,10 +1,12 @@
-package main.Tests;
+package main.Tests.CrawlerExamples.Working.Crawler;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 
-class Web{
+//This class contains a static function which will fetch the webpage of the given url and return as a string
+
+class Web2 {
     public static String getWeb(String address)throws Exception{
         String webpage = "";
         String inputLine = "";

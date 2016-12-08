@@ -199,8 +199,7 @@ public class TestCrawler4 {
         }
     }
 
-// Top-level procedure. Keep popping a url off newURLs, download
-// it, and accumulate new URLs
+// Top-level procedure. Keep popping a url off newURLs, download it, and accumulate new URLs
 
     public void run(String[] argv)
 

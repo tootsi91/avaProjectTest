@@ -1,4 +1,4 @@
-package main.Tests.CrawlerExamples.TestCrawler;/*
+package main.Tests.CrawlerExamples.NotWorking.TestCrawler;/*
 package CrawlerExamples.TestCrawler;
 
 import java.net.*;
