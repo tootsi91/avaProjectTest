@@ -27,6 +27,8 @@ public class Main extends Application {
         primaryStage.show();
     }
 
+
+    //GUI
     private void init(Stage primaryStage) {
         Group root = new Group();
         primaryStage.setScene(new Scene(root));
