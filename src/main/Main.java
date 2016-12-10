@@ -1,55 +1,48 @@
 package main;
 
 import javafx.application.Application;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
+import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import main.Tests.GUIexamples.JavaFX.TableSample;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.io.*;
-import java.net.URI;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.io.FileInputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import java.text.NumberFormat;
 
-import static com.sun.java.accessibility.util.AWTEventMonitor.addActionListener;
+import javafx.application.Application;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.beans.property.StringProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.util.Callback;
 
 public class Main extends Application {
-
-    private FileCrawler crawler;
 
     public static void main(String[] args) throws Exception {
         launch(args);
@@ -59,7 +52,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         primaryStage.setTitle("Java Web Crawler");
-        Pane root = new Pane();
+        //Pane root = new Pane();
 
         init(primaryStage);
         primaryStage.show();
@@ -68,7 +61,8 @@ public class Main extends Application {
     //GUI
     private void init(Stage primaryStage) {
         Group root = new Group();
-        primaryStage.setScene(new Scene(root, 500, 500));
+        primaryStage.setScene(new Scene(root, 350, 600));
+        String validatorCss = Main.class.getResource("Validators.css").toExternalForm();
 
         VBox vbox = new VBox();
 
@@ -104,15 +98,98 @@ public class Main extends Application {
 
         Label grid2Caption = new Label("Insert the name of the webpage you want to search below:");
         grid2Caption.setWrapText(true);
-        GridPane grid2 = new GridPane();
-        grid2.setPadding(new Insets(18, 18, 18, 18));
-        grid2.setGridLinesVisible(false);
-        TextField textBox = new TextField("Insert link here:");
-        GridPane.setMargin(textBox, new Insets(10, 10, 10, 10));
-        GridPane.setConstraints(textBox, 0, 0);
+        TextField textBox = new TextField();
+        TextInputValidatorPane<TextField> pane = new TextInputValidatorPane<TextField>();
+        pane.setContent(textBox);
+        pane.setValidator(new Validator<TextField>() {
+            public ValidationResult validate(TextField control) {
+                try {String text = control.getText();
+                    if (text == null || text.trim().equals(""))
+                        return null;
+                    String d = control.getText();
+                    if (text.contains(".pdf") || text.contains("@") || text.contains(".jpg") ||
+                            text.contains(".pdf")) {
+                        return new ValidationResult("Invalid Link", ValidationResult.Type.WARNING);
+                    }
+                    return null; // succeeded
+                } catch (Exception e) {
+                    // failed
+                    return new ValidationResult("Error", ValidationResult.Type.ERROR);
+                }
+            }
+        });
 
-        //label
+        //Button
         Button button = new Button("Search");
+        button.setPrefSize(190, 20);
+/*        buttonAddNumber.setOnAction(new EventHandler<ActionEvent>() {
+
+            public void handle(ActionEvent t) {
+
+            }
+        });*/
+
+/*        button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void actionSearch() {
+                // If stop button clicked, turn crawling flag off.
+                if (crawling) {
+                    crawling = false;
+                    return;
+                }
+                ArrayList errorList = new ArrayList();
+                // Validate that start URL has been entered.
+                String startUrl = startTextField.getText().trim();
+                if (startUrl.length() < 1) {
+                    errorList.add("Missing Start URL.");
+                }
+                // Verify start URL.
+                else if (verifyUrl(startUrl) == null) {
+                    errorList.add("Invalid Start URL.");
+                }
+                // Validate that Max URLs is either empty or is a number.
+                int maxUrls = 0;
+                String max = ((String) maxComboBox.getSelectedItem()).trim();
+                if (max.length() > 0) {
+                    try {
+                        maxUrls = Integer.parseInt(max);
+                    } catch (NumberFormatException e) {
+                    }
+                    if (maxUrls < 1) {
+                        errorList.add("Invalid Max URLs value.");
+                    }
+                }
+                // Validate that matches log file has been entered.
+                String logFile = logTextField.getText().trim();
+                if (logFile.length() < 1) {
+                    errorList.add("Missing Matches Log File.");
+                }
+                // Validate that search string has been entered.
+                String searchString = searchTextField.getText().trim();
+                if (searchString.length() < 1) {
+                    errorList.add("Missing Search String.");
+                }
+                // Show errors, if any, and return.
+                if (errorList.size() > 0) {
+                    StringBuffer message = new StringBuffer();
+                    // Concatenate errors into single message.
+                    for (int i = 0; i < errorList.size(); i++) {
+                        message.append(errorList.get(i));
+                        if (i + 1 < errorList.size()) {
+                            message.append("\n");
+                        }
+                    }
+                    showError(message.toString());
+                    return;
+                }
+                // Remove "www" from start URL if present.
+                startUrl = removeWwwFromUrl(startUrl);
+                // Start the Search Crawler.
+                search(logFile, startUrl, maxUrls, searchString);
+            }
+        });*/
+
+
 /*        button.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
                 FileCrawler.processPage("http://www.neti.ee");
@@ -139,27 +216,192 @@ public class Main extends Application {
             }        });*/
 
 
-        vbox.getChildren().addAll(grid2Caption, grid2, textBox, button);
+        vbox.setPadding(new Insets(12));
+        vbox.getChildren().addAll(grid2Caption, pane, button);
 
         Label grid3Caption = new Label ("Search results");
-        grid2Caption.setWrapText(true);
-        GridPane grid3 = new GridPane();
-        grid3.setPadding(new Insets(18, 18, 18, 18));
-        grid3.setGridLinesVisible(false);
-        RowConstraints rowinfo3 = new RowConstraints();
-        rowinfo3.setPercentHeight(50);
-        ColumnConstraints colInfo3 = new ColumnConstraints();
-        colInfo3.setPercentWidth(50);
-        GridPane.setConstraints(label, 1, 1, 5, 1);
-        GridPane.setHalignment(label, HPos.LEFT);
-        GridPane.setConstraints(button, 1, 0);
-        GridPane.setMargin(button, new Insets(10, 10, 10, 10));
-        GridPane.setHalignment(button, HPos.CENTER);
+        grid3Caption.setWrapText(true);
+        ListView<String> listView = new ListView<String>();
+        listView.setItems(FXCollections.observableArrayList(
+                "www.example.com", "www.example.com", "www.example.com", "www.example.com", "www.example.com",
+                "www.example.com", "www.example.com", "www.example.com", "www.example.com", "www.example.com",
+                "www.example.com", "www.example.com", "www.example.com", "www.example.com", "www.example.com",
+                "www.example.com", "www.example.com", "www.example.com", "www.example.com", "www.example.com"
+        ));
 
-        vbox.getChildren().addAll(grid3Caption, grid3);
+        listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        vbox.getChildren().addAll(grid3Caption, listView);
 
-
+        pane.getStylesheets().add(validatorCss);
         root.getChildren().add(vbox);
+
+    }
+
+    public static class ValidationResult {
+        public enum Type { ERROR, WARNING, SUCCESS }
+        private final String message;
+        private final Type type;
+
+        public ValidationResult(String message, Type type) {
+            this.message = message;
+            this.type = type;
+        }
+
+        public final String getMessage() {
+            return message;
+        }
+
+        public final Type getType() {
+            return type;
+        }
+    }
+
+    private static interface Validator<C extends Control> {
+        public ValidationResult validate(C control);
+    }
+
+    public static class ValidationEvent extends Event {
+        public static final EventType<ValidationEvent> ANY =
+                new EventType<ValidationEvent>(Event.ANY, "VALIDATION");
+
+        private final ValidationResult result;
+
+        public ValidationEvent(ValidationResult result) {
+            super(ANY);
+            this.result = result;
+        }
+
+        public final ValidationResult getResult() { return result; }
+    }
+
+    private abstract class ValidatorPane<C extends Control> extends Region {
+        /**
+         * The content for the validator pane is the control it should work with.
+         */
+        private ObjectProperty<C> content = new SimpleObjectProperty<C>(this, "content", null);
+        public final C getContent() { return content.get(); }
+        public final void setContent(C value) { content.set(value); }
+        public final ObjectProperty<C> contentProperty() { return content; }
+
+        /**
+         * The validator
+         */
+        private ObjectProperty<Validator<C>> validator = new SimpleObjectProperty<Validator<C>>(this, "validator");
+        public final Validator<C> getValidator() { return validator.get(); }
+        public final void setValidator(Validator<C> value) { validator.set(value); }
+        public final ObjectProperty<Validator<C>> validatorProperty() { return validator; }
+
+        /**
+         * The validation result
+         */
+        private ReadOnlyObjectWrapper<ValidationResult> validationResult = new ReadOnlyObjectWrapper<ValidationResult>(this, "validationResult");
+        public final ValidationResult getValidationResult() { return validationResult.get(); }
+        public final ReadOnlyObjectProperty<ValidationResult> validationResultProperty() { return validationResult.getReadOnlyProperty(); }
+
+        /**
+         *  The event handler
+         */
+        private ObjectProperty<EventHandler<ValidationEvent>> onValidation =
+                new SimpleObjectProperty<EventHandler<ValidationEvent>>(this, "onValidation");
+        public final EventHandler<ValidationEvent> getOnValidation() { return onValidation.get(); }
+        public final void setOnValidation(EventHandler<ValidationEvent> value) { onValidation.set(value); }
+        public final ObjectProperty<EventHandler<ValidationEvent>> onValidationProperty() { return onValidation; }
+
+        public ValidatorPane() {
+            content.addListener(new ChangeListener<Control>() {
+                public void changed(ObservableValue<? extends Control> ov, Control oldValue, Control newValue) {
+                    if (oldValue != null) getChildren().remove(oldValue);
+                    if (newValue != null) getChildren().add(0, newValue);
+                }
+            });
+        }
+
+        //Adds color
+
+        protected void handleValidationResult(ValidationResult result) {
+            getStyleClass().removeAll("validation-error", "validation-warning");
+            if (result != null) {
+                if (result.getType() == ValidationResult.Type.ERROR) {
+                    getStyleClass().add("validation-error");
+                } else if (result.getType() == ValidationResult.Type.WARNING) {
+                    getStyleClass().add("validation-warning");
+                }
+            }
+            validationResult.set(result);
+            fireEvent(new ValidationEvent(result));
+        }
+
+        @Override
+        protected void layoutChildren() {
+            Control c = content.get();
+            if (c != null) {
+                c.resizeRelocate(0, 0, getWidth(), getHeight());
+            }
+        }
+
+/*        @Override
+        protected double computeMaxHeight(double d) {
+            Control c = content.get();
+            return c == null ? super.computeMaxHeight(d) : c.maxHeight(d);
+        }
+
+        @Override
+        protected double computeMinHeight(double d) {
+            Control c = content.get();
+            return c == null ? super.computeMinHeight(d) : c.minHeight(d);
+        }
+
+        @Override
+        protected double computePrefHeight(double d) {
+            Control c = content.get();
+            return c == null ? super.computePrefHeight(d) : c.prefHeight(d);
+        }
+
+        @Override
+        protected double computePrefWidth(double d) {
+            Control c = content.get();
+            return c == null ? super.computePrefWidth(d) : c.prefWidth(d);
+        }
+
+        @Override
+        protected double computeMaxWidth(double d) {
+            Control c = content.get();
+            return c == null ? super.computeMaxWidth(d) : c.maxWidth(d);
+        }
+
+        @Override
+        protected double computeMinWidth(double d) {
+            Control c = content.get();
+            return c == null ? super.computeMinWidth(d) : c.minWidth(d);
+        }*/
+    }
+
+    private class TextInputValidatorPane<C extends TextInputControl> extends ValidatorPane<C> {
+
+        private InvalidationListener textListener = new InvalidationListener() {
+            @Override public void invalidated(Observable o) {
+                final Validator v = getValidator();
+                final ValidationResult result = v != null ?
+                        v.validate(getContent()) :
+                        new ValidationResult("", ValidationResult.Type.SUCCESS);
+
+                handleValidationResult(result);
+            }
+        };
+
+        public TextInputValidatorPane() {
+            contentProperty().addListener(new ChangeListener<C>() {
+                @Override public void changed(ObservableValue<? extends C> ov, C oldValue, C newValue) {
+                    if (oldValue != null) oldValue.textProperty().removeListener(textListener);
+                    if (newValue != null) newValue.textProperty().addListener(textListener);
+                }
+            });
+        }
+
+        public TextInputValidatorPane(C field) {
+            this();
+            setContent(field);
+        }
 
     }
 
@@ -199,11 +441,16 @@ public class Main extends Application {
         fis.close();
 
         return false;
-    }
+    }*/
 
 
     // Search method
-    public static void processPage(String URL) throws IOException {
+
+/*    private void actionSearch() {
+
+    }*/
+
+/*    public static void processPage(String URL) throws IOException {
 
         File dir = new File(".");
         String loc = dir.getCanonicalPath() + File.separator + "record.txt";
@@ -261,5 +508,3 @@ public class Main extends Application {
     }*/
 
 }
-
-

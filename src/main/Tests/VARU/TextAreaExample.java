@@ -1,4 +1,4 @@
-package main;
+package main.Tests.VARU;
 
 import java.io.FileInputStream;
 import java.io.IOException;

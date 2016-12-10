@@ -1,18 +1,13 @@
-package main;
+package main.Tests.CrawlerExamples.Working;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class FileCrawler {
+import java.io.*;
+
+public class FileCrawlerVaru {
 
     public static void main(String[] args) throws IOException {
 
@@ -64,7 +59,10 @@ public class FileCrawler {
         String loc = dir.getCanonicalPath() + File.separator + "record.txt";
 
         // invalid link
-        if (URL.contains(".pdf") || URL.contains("@") ||  URL.contains(".jpg") || URL.contains(".pdf"))
+        if (URL.contains(".pdf") || URL.contains("@")
+                || URL.contains("adfad") || URL.contains(":80")
+                || URL.contains("fdafd") || URL.contains(".jpg")
+                || URL.contains(".pdf") || URL.contains(".jpg"))
             return;
 
         // process the url first

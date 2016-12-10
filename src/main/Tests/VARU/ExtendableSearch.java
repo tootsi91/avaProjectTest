@@ -1,4 +1,4 @@
-package main;
+package main.Tests.VARU;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;

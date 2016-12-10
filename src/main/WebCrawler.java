@@ -1,4 +1,4 @@
-package main.Tests.CrawlerExamples;
+package main;
 
 /* Copyright 2004 Sun Microsystems, Inc.  All rights reserved.  You may not modify, use, reproduce, or distribute this software except in compliance with the terms of the License at:*/
 

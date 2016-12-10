@@ -1,18 +1,14 @@
+/*
 package main.Tests.GUIexamples.JavaFX;
 
+*/
 /**
  * Copyright (c) 2008, 2012 Oracle and/or its affiliates.
  * All rights reserved. Use is subject to license terms.
- */
+ *//*
+
+
 import javafx.application.Application;
-import javafx.collections.ObservableList;
-import javafx.geometry.HPos;
-import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.property.ObjectProperty;
@@ -25,23 +21,27 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.geometry.Insets;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.Control;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
+*/
 /**
  * Demonstrates a TextField control that allows you to enter text.
  *
- * @see javafx.scene.control.TextField
+ * @see TextField
  * @resource Validators.css
- */
+ *//*
 
-public class TextValidatorSample extends Application {
+public class TextValidatorSampleVARU extends Application {
     public static void main(String[] args) { launch(args); }
 
     @Override public void start(Stage primaryStage) throws Exception {
-
-        primaryStage.setTitle("TextValidatorSample");
-
         init(primaryStage);
         primaryStage.show();
     }
@@ -49,45 +49,8 @@ public class TextValidatorSample extends Application {
     private void init(Stage primaryStage) {
         Group root = new Group();
         primaryStage.setScene(new Scene(root));
-        String validatorCss = TextValidatorSample.class.getResource("Validators.css").toExternalForm();
+        String validatorCss = TextValidatorSampleVARU.class.getResource("Validators.css").toExternalForm();
 
-        StackPane rootSP = new StackPane();
-
-        Label grid1Caption = new Label("Info:");
-        grid1Caption.setWrapText(true);
-        GridPane grid1 = new GridPane();
-        grid1.setHgap(6);
-        grid1.setVgap(6);
-        grid1.setPadding(new Insets(18, 18, 18, 18));
-        ObservableList<Node> content = grid1.getChildren();
-
-        Label label = new Label("Name:");
-        GridPane.setConstraints(label, 0, 0);
-        GridPane.setHalignment(label, HPos.RIGHT);
-        content.add(label);
-
-        label = new Label("Ats Tootsi");
-        GridPane.setConstraints(label, 1, 0, 2, 1);
-        GridPane.setHalignment(label, HPos.LEFT);
-        content.add(label);
-
-        label = new Label("Gorup:");
-        GridPane.setConstraints(label, 0, 1);
-        GridPane.setHalignment(label, HPos.RIGHT);
-        content.add(label);
-
-        label = new Label("C11");
-        GridPane.setConstraints(label, 1, 1, 5, 1);
-        GridPane.setHalignment(label, HPos.LEFT);
-        content.add(label);
-
-        rootSP.getChildren().addAll(grid1Caption, grid1);
-
-        Label grid2Caption = new Label("Insert the name of the webpage you want to search below:");
-        grid2Caption.setWrapText(true);
-        GridPane grid2 = new GridPane();
-        grid2.setPadding(new Insets(18, 18, 18, 18));
-        grid2.setGridLinesVisible(false);
         TextField dateField = new TextField();
         dateField.setPromptText("Enter a Large Number");
         dateField.setMaxHeight(TextField.USE_PREF_SIZE);
@@ -96,12 +59,11 @@ public class TextValidatorSample extends Application {
         pane.setContent(dateField);
         pane.setValidator(new Validator<TextField>() {
             public ValidationResult validate(TextField control) {
-                try {String text = control.getText();
-                    if (text == null || text.trim().equals(""))
-                        return null;
-                    String d = control.getText();
-                    if (text.contains(".pdf") || text.contains("@") || text.contains(".jpg") ||
-                            text.contains(".pdf")) {
+                try {
+                    String text = control.getText();
+                    if (text == null || text.trim().equals("")) return null;
+                    double d = Double.parseDouble(text);
+                    if (d < 1000) {
                         return new ValidationResult("Should be > 1000", ValidationResult.Type.WARNING);
                     }
                     return null; // succeeded
@@ -112,17 +74,9 @@ public class TextValidatorSample extends Application {
             }
         });
 
-        Button button = new Button("Search");
-        button.setPrefSize(190, 20);
-
-        rootSP.setPadding(new Insets(12));
-        rootSP.getChildren().addAll(pane, grid2Caption, grid2, button);
-
-/*
         StackPane rootSP = new StackPane();
-*/
         rootSP.setPadding(new Insets(12));
-        //rootSP.getChildren().add(pane);
+        rootSP.getChildren().add(pane);
         pane.getStylesheets().add(validatorCss);
         root.getChildren().add(rootSP);
     }
@@ -165,32 +119,40 @@ public class TextValidatorSample extends Application {
     }
 
     private abstract class ValidatorPane<C extends Control> extends Region {
-        /**
+        */
+/**
          * The content for the validator pane is the control it should work with.
-         */
+         *//*
+
         private ObjectProperty<C> content = new SimpleObjectProperty<C>(this, "content", null);
         public final C getContent() { return content.get(); }
         public final void setContent(C value) { content.set(value); }
         public final ObjectProperty<C> contentProperty() { return content; }
 
-        /**
+        */
+/**
          * The validator
-         */
+         *//*
+
         private ObjectProperty<Validator<C>> validator = new SimpleObjectProperty<Validator<C>>(this, "validator");
         public final Validator<C> getValidator() { return validator.get(); }
         public final void setValidator(Validator<C> value) { validator.set(value); }
         public final ObjectProperty<Validator<C>> validatorProperty() { return validator; }
 
-        /**
+        */
+/**
          * The validation result
-         */
+         *//*
+
         private ReadOnlyObjectWrapper<ValidationResult> validationResult = new ReadOnlyObjectWrapper<ValidationResult>(this, "validationResult");
         public final ValidationResult getValidationResult() { return validationResult.get(); }
         public final ReadOnlyObjectProperty<ValidationResult> validationResultProperty() { return validationResult.getReadOnlyProperty(); }
 
-        /**
+        */
+/**
          *  The event handler
-         */
+         *//*
+
         private ObjectProperty<EventHandler<ValidationEvent>> onValidation =
                 new SimpleObjectProperty<EventHandler<ValidationEvent>>(this, "onValidation");
         public final EventHandler<ValidationEvent> getOnValidation() { return onValidation.get(); }
@@ -295,3 +257,4 @@ public class TextValidatorSample extends Application {
     }
 
 }
+*/
