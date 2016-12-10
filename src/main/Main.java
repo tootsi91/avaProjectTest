@@ -25,7 +25,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -34,6 +33,17 @@ import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.io.FileInputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import static com.sun.java.accessibility.util.AWTEventMonitor.addActionListener;
 
@@ -48,6 +58,9 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
+        primaryStage.setTitle("Java Web Crawler");
+        Pane root = new Pane();
+
         init(primaryStage);
         primaryStage.show();
     }
@@ -55,11 +68,11 @@ public class Main extends Application {
     //GUI
     private void init(Stage primaryStage) {
         Group root = new Group();
-        primaryStage.setScene(new Scene(root));
+        primaryStage.setScene(new Scene(root, 500, 500));
 
         VBox vbox = new VBox();
 
-        Label grid1Caption = new Label("Java Web Crawler");
+        Label grid1Caption = new Label("Info:");
         grid1Caption.setWrapText(true);
         GridPane grid1 = new GridPane();
         grid1.setHgap(6);
@@ -87,25 +100,34 @@ public class Main extends Application {
         GridPane.setHalignment(label, HPos.LEFT);
         content.add(label);
 
-        vbox.getChildren().addAll(grid1Caption, grid1, new Separator());
+        vbox.getChildren().addAll(grid1Caption, grid1);
 
         Label grid2Caption = new Label("Insert the name of the webpage you want to search below:");
         grid2Caption.setWrapText(true);
         GridPane grid2 = new GridPane();
         grid2.setPadding(new Insets(18, 18, 18, 18));
-        grid2.setGridLinesVisible(true);
-        RowConstraints rowinfo2 = new RowConstraints();
-        rowinfo2.setPercentHeight(50);
-        ColumnConstraints colInfo2 = new ColumnConstraints();
-        colInfo2.setPercentWidth(50);
-        grid2.getRowConstraints().add(rowinfo2);
-        grid2.getColumnConstraints().add(colInfo2);
-        TextField textBox = new TextField("Insert Link here");
+        grid2.setGridLinesVisible(false);
+        TextField textBox = new TextField("Insert link here:");
         GridPane.setMargin(textBox, new Insets(10, 10, 10, 10));
         GridPane.setConstraints(textBox, 0, 0);
 
+        //label
         Button button = new Button("Search");
-        button.setOnAction(new EventHandler<ActionEvent>() {
+/*        button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent event) {
+                FileCrawler.processPage("http://www.neti.ee");
+            }
+        });*/
+/*        button.setOnAction(new EventHandler() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                //... do something in here.
+            }
+        });*/
+
+
+
+ /*       button.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 try {
                     processPage("www.neti.ee");
@@ -113,39 +135,35 @@ public class Main extends Application {
                     e1.printStackTrace();
                 }
 
-                /*label.setText("Searching")*/;
-            }
+                *//*label.setText("Searching")*//*;
+            }        });*/
 
 
-        });
+        vbox.getChildren().addAll(grid2Caption, grid2, textBox, button);
 
-        /*DropShadow shadow = new DropShadow();
-        //Adding the shadow when the mouse cursor is on
-        button.addEventHandler(MouseEvent.MOUSE_ENTERED,
-                (EventHandler<MouseEvent>) e -> button.setEffect(shadow));
-        //Removing the shadow when the mouse cursor is off
-        button.addEventHandler(MouseEvent.MOUSE_EXITED,
-                new EventHandler<MouseEvent>() {
-                    @Override public void handle(MouseEvent e) {
-                        button.setEffect(null);
-                    }
-                });*/
+        Label grid3Caption = new Label ("Search results");
+        grid2Caption.setWrapText(true);
+        GridPane grid3 = new GridPane();
+        grid3.setPadding(new Insets(18, 18, 18, 18));
+        grid3.setGridLinesVisible(false);
+        RowConstraints rowinfo3 = new RowConstraints();
+        rowinfo3.setPercentHeight(50);
+        ColumnConstraints colInfo3 = new ColumnConstraints();
+        colInfo3.setPercentWidth(50);
+        GridPane.setConstraints(label, 1, 1, 5, 1);
+        GridPane.setHalignment(label, HPos.LEFT);
         GridPane.setConstraints(button, 1, 0);
         GridPane.setMargin(button, new Insets(10, 10, 10, 10));
         GridPane.setHalignment(button, HPos.CENTER);
 
-        grid2.getChildren().addAll(button, textBox);
+        vbox.getChildren().addAll(grid3Caption, grid3);
 
-        vbox.getChildren().addAll(grid2Caption, grid2);
 
         root.getChildren().add(vbox);
 
-        Label grid3Caption = new Label("Result table:");
-        grid3Caption.setWrapText(true);
-        GridPane grid3 = new GridPane();
     }
 
-    private URL verifyUrl(String url) {
+/*    private URL verifyUrl(String url) {
         // Only allow HTTP URLs.
         if (!url.toLowerCase().startsWith("http://"))
             return null;
@@ -157,10 +175,10 @@ public class Main extends Application {
             return null;
         }
         return verifiedUrl;
-    }
+    }*/
 
-
-    public static boolean checkExist(String s, File fin) throws IOException {
+    //Search string
+/*    public static boolean checkExist(String s, File fin) throws IOException {
 
         FileInputStream fis = new FileInputStream(fin);
         // //Construct the BufferedReader object
@@ -184,6 +202,7 @@ public class Main extends Application {
     }
 
 
+    // Search method
     public static void processPage(String URL) throws IOException {
 
         File dir = new File(".");
@@ -239,88 +258,8 @@ public class Main extends Application {
             // do nothing
             return;
         }
-    }
+    }*/
 
 }
-
-
-/*    private void actionSearch() {
-
-    }*/
-        //Result table
-
-/*        final ObservableList<Main.Person> data = FXCollections.observableArrayList();
-        TableColumn linkCol = new TableColumn();
-        linkCol.setText("Links");
-        linkCol.setMinWidth(200);
-        linkCol.setCellValueFactory(new PropertyValueFactory("Links"));
-        TableView tableView = new TableView();
-        tableView.setItems(data);
-        tableView.getColumns().addAll(linkCol);
-        root.getChildren().add(tableView);
-
-        GridPane.setConstraints(linkCol, 0, 0);
-        grid3.getChildren().addAll(linkCol);
-
-        vbox.getChildren().addAll(grid3Caption, grid3);
-
-    }*/
-
-        /*    private void actionSearch() {
-                // If stop button clicked, turn crawling flag off.
-                if (crawling) {
-                    crawling = false;
-                    return;
-                }
-                ArrayList errorList = new ArrayList();
-                // Validate that start URL has been entered.
-                String startUrl = startTextField.getText().trim();
-                if (startUrl.length() < 1) {
-                    errorList.add("Missing Start URL.");
-                }
-                // Verify start URL.
-                else if (verifyUrl(startUrl) == null) {
-                    errorList.add("Invalid Start URL.");
-                }
-                // Validate that Max URLs is either empty or is a number.
-                int maxUrls = 0;
-                String max = ((String) maxComboBox.getSelectedItem()).trim();
-                if (max.length() > 0) {
-                    try {
-                        maxUrls = Integer.parseInt(max);
-                    } catch (NumberFormatException e) {
-                    }
-                    if (maxUrls < 1) {
-                        errorList.add("Invalid Max URLs value.");
-                    }
-                }
-                // Validate that matches log file has been entered.
-                String logFile = logTextField.getText().trim();
-                if (logFile.length() < 1) {
-                    errorList.add("Missing Matches Log File.");
-                }
-                // Validate that search string has been entered.
-                String searchString = searchTextField.getText().trim();
-                if (searchString.length() < 1) {
-                    errorList.add("Missing Search String.");
-                }
-                // Show errors, if any, and return.
-                if (errorList.size() > 0) {
-                    StringBuffer message = new StringBuffer();
-                    // Concatenate errors into single message.
-                    for(int i=0;i<errorList.size(); i++) {
-                        message.append(errorList.get(i));
-                        if(i+1<errorList.size()) {
-                            message.append("\n");
-                        }
-                    }
-                    showError(message.toString());
-                    return;
-                }
-                // Remove "www" from start URL if present.
-                startUrl = removeWwwFromUrl(startUrl);
-                // Start the Search Crawler.
-                search(logFile, startUrl, maxUrls, searchString);
-            }*/
 
 

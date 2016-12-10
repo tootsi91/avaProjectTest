@@ -1,4 +1,4 @@
-package main;
+package main.Tests.Test;
 
 public class CrawlerM {
 

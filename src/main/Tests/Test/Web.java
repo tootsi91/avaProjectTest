@@ -1,4 +1,4 @@
-package main;
+package main.Tests.Test;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

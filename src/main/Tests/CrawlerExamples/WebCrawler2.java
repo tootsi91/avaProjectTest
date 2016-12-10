@@ -36,7 +36,7 @@ public class WebCrawler2 implements Runnable {
     }
 
     public void run() {
-        String strURL = "http://www.google.com";
+        String strURL = "http://www.neti.ee";
         String strTargetType = "text/html";
         int numberSearched = 0;
         int numberFound = 0;
