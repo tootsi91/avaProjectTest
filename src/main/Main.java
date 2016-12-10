@@ -27,7 +27,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import java.net.URL;
 import java.text.NumberFormat;
-
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -104,18 +103,27 @@ public class Main extends Application {
         pane.setValidator(new Validator<TextField>() {
             public ValidationResult validate(TextField control) {
                 try {String text = control.getText();
-                    if (text == null || text.trim().equals(""))
+                    if (text.toLowerCase().startsWith("http://"))
+                        return new ValidationResult("Valid Link", ValidationResult.Type.SUCCESS);
+                    else return new ValidationResult("Invalid Link", ValidationResult.Type.WARNING);
+
+
+/*                    if (text == null || text.trim().equals(""))
                         return null;
-                    String d = control.getText();
+                    else if (text.contains(".pdf") || text.contains("@") || text.contains(".jpg"))
+                        return new ValidationResult("Invalid Link", ValidationResult.Type.WARNING);
+                    else if (text.toLowerCase().startsWith("http://"))
+                        return new ValidationResult("Valid Link", ValidationResult.Type.SUCCESS);*/
+/*                    String d = control.getText();
                     if (text.contains(".pdf") || text.contains("@") || text.contains(".jpg") ||
                             text.contains(".pdf")) {
                         return new ValidationResult("Invalid Link", ValidationResult.Type.WARNING);
-                    }
-                    return null; // succeeded
+                    }*/
+                    //return null; // succeeded
                 } catch (Exception e) {
-                    // failed
                     return new ValidationResult("Error", ValidationResult.Type.ERROR);
                 }
+
             }
         });
 
@@ -325,6 +333,8 @@ public class Main extends Application {
                     getStyleClass().add("validation-error");
                 } else if (result.getType() == ValidationResult.Type.WARNING) {
                     getStyleClass().add("validation-warning");
+                } else if (result.getType() == ValidationResult.Type.SUCCESS) {
+                    getStyleClass().add("validation-success");
                 }
             }
             validationResult.set(result);

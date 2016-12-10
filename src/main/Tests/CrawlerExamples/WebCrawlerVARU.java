@@ -1,6 +1,9 @@
+/*
 package main.Tests.CrawlerExamples;
 
-/* Copyright 2004 Sun Microsystems, Inc.  All rights reserved.  You may not modify, use, reproduce, or distribute this software except in compliance with the terms of the License at:*/
+*/
+/* Copyright 2004 Sun Microsystems, Inc.  All rights reserved.  You may not modify, use, reproduce, or distribute this software except in compliance with the terms of the License at:*//*
+
 
 //import java.applet.Applet;
 
@@ -400,8 +403,10 @@ public class WebCrawlerVARU extends Applet implements ActionListener, Runnable {
         WebCrawlerVARU applet = new WebCrawlerVARU();
         f.add("Center", applet);
 
-/*    Behind a firewall set your proxy and port here!
 */
+/*    Behind a firewall set your proxy and port here!
+*//*
+
         Properties props= new Properties(System.getProperties());
         props.put("http.proxySet", "true");
         props.put("http.proxyHost", "webcache-cup");
@@ -409,7 +414,9 @@ public class WebCrawlerVARU extends Applet implements ActionListener, Runnable {
 
         Properties newprops = new Properties(props);
         System.setProperties(newprops);
-/**/
+*/
+/**//*
+
 
 
         applet.init();
@@ -418,4 +425,4 @@ public class WebCrawlerVARU extends Applet implements ActionListener, Runnable {
         f.show();
     }
 
-}
+}*/

@@ -37,3 +37,7 @@
 .validation-warning .text-field {
     -fx-background-color: yellow;
 }
+
+.validation-success .text-field {
+    -fx-background-color: greenyellow;
+}

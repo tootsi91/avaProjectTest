@@ -1,3 +1,4 @@
+/*
 package main.Tests.CrawlerExamples.Working;
 
 import javax.swing.*;
@@ -476,13 +477,17 @@ public class SearchCrawlerVARU extends JFrame {
                 disallowListCache.put(host, disallowList);
             }
             catch (Exception e) {
-                /* Assume robot is allowed since an exception
-                is thrown if the robot file doesn't exist. */
+                */
+/* Assume robot is allowed since an exception
+                is thrown if the robot file doesn't exist. *//*
+
                 return true;
             }
         }
-        /* Loop through disallow list to see if
-        crawling is allowed for the given URL. */
+        */
+/* Loop through disallow list to see if
+        crawling is allowed for the given URL. *//*
+
         String file = urlToCheck.getFile();
         for(int i=0;i<
                 disallowList.size(); i++) {
@@ -577,7 +582,9 @@ public class SearchCrawlerVARU extends JFrame {
             if (verifiedLink == null) {
                 continue;
             }
-            /* If specified, limit links to those having the same host as the start URL. */
+            */
+/* If specified, limit links to those having the same host as the start URL. *//*
+
             if (limitHost &&
                     !pageUrl.getHost().toLowerCase().equals(
                             verifiedLink.getHost().toLowerCase()))
@@ -593,11 +600,15 @@ public class SearchCrawlerVARU extends JFrame {
         }
         return (linkList);
     }
-    /* Determine whether or not search string is
-    matched in the given page contents. */
+    */
+/* Determine whether or not search string is
+    matched in the given page contents. *//*
+
     private boolean searchStringMatches(String pageContents, String searchString, boolean caseSensitive) {
         String searchContents = pageContents;
-        /* If case-sensitive search, lowercase page contents for comparison. */
+        */
+/* If case-sensitive search, lowercase page contents for comparison. *//*
+
         if (!caseSensitive) {
             searchContents = pageContents.toLowerCase();
         }
@@ -627,10 +638,14 @@ public class SearchCrawlerVARU extends JFrame {
         LinkedHashSet toCrawlList = new LinkedHashSet();
         // Add start URL to the to crawl list.
         toCrawlList.add(startUrl);
-        /* Perform actual crawling by looping through the To Crawl list. */
+        */
+/* Perform actual crawling by looping through the To Crawl list. *//*
+
         while (crawling && toCrawlList.size() > 0)
         {
-            /* Check to see if the max URL count has been reached, if it was specified.*/
+            */
+/* Check to see if the max URL count has been reached, if it was specified.*//*
+
             if (maxUrls != -1) {
                 if (crawledList.size() == maxUrls) {
                     break;
@@ -653,7 +668,9 @@ public class SearchCrawlerVARU extends JFrame {
             crawledList.add(url);
             // Download the page at the given URL.
             String pageContents = downloadPage(verifiedUrl);
-            /* If the page was downloaded successfully, retrieve all its links and then see if it contains the search string. */
+            */
+/* If the page was downloaded successfully, retrieve all its links and then see if it contains the search string. *//*
+
             if (pageContents != null && pageContents.length() > 0)
             {
                 // Retrieve list of valid links from page.
@@ -662,7 +679,9 @@ public class SearchCrawlerVARU extends JFrame {
                                 limitHost);
                 // Add links to the To Crawl list.
                 toCrawlList.addAll(links);
-                /* Check if search string is present in page, and if so, record a match. */
+                */
+/* Check if search string is present in page, and if so, record a match. *//*
+
                 if (searchStringMatches(pageContents, searchString,
                         caseSensitive))
                 {
@@ -682,3 +701,4 @@ public class SearchCrawlerVARU extends JFrame {
 }
 
 
+*/

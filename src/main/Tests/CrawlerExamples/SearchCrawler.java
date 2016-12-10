@@ -1,4 +1,4 @@
-package main;
+package main.Tests.CrawlerExamples;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

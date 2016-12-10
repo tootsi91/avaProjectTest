@@ -1,3 +1,4 @@
+/*
 package main.Tests.CrawlerExamples.Working;
 
 import org.jsoup.Jsoup;
@@ -111,3 +112,4 @@ public class FileCrawlerVaru {
 
     }
 }
+*/
