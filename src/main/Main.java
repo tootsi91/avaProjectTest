@@ -26,6 +26,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.net.URL;
 import java.text.NumberFormat;
 import javafx.application.Application;
@@ -63,7 +65,6 @@ public class Main extends Application {
         String validatorCss = Main.class.getResource("Validators.css").toExternalForm();
 
         VBox vbox = new VBox();
-
 
         //Tab
         BorderPane borderPane = new BorderPane();
@@ -133,6 +134,20 @@ public class Main extends Application {
         //Button
         Button button = new Button("Search");
         button.setPrefSize(190, 20);
+        button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                try {
+                    FileCrawler.processPage("http://www.neti.ee");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }});
+
+
+
+
 /*        buttonAddNumber.setOnAction(new EventHandler<ActionEvent>() {
 
             public void handle(ActionEvent t) {
