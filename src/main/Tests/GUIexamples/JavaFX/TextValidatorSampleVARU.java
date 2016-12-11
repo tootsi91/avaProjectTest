@@ -1,11 +1,9 @@
-/*
 package main.Tests.GUIexamples.JavaFX;
 
-*/
 /**
  * Copyright (c) 2008, 2012 Oracle and/or its affiliates.
  * All rights reserved. Use is subject to license terms.
- *//*
+ */
 
 
 import javafx.application.Application;
@@ -30,13 +28,12 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-*/
 /**
  * Demonstrates a TextField control that allows you to enter text.
  *
  * @see TextField
- * @resource Validators.css
- *//*
+ * @resource Validators.css*/
+
 
 public class TextValidatorSampleVARU extends Application {
     public static void main(String[] args) { launch(args); }
@@ -119,39 +116,35 @@ public class TextValidatorSampleVARU extends Application {
     }
 
     private abstract class ValidatorPane<C extends Control> extends Region {
-        */
 /**
-         * The content for the validator pane is the control it should work with.
-         *//*
+         * The content for the validator pane is the control it should work with.*/
+
 
         private ObjectProperty<C> content = new SimpleObjectProperty<C>(this, "content", null);
         public final C getContent() { return content.get(); }
         public final void setContent(C value) { content.set(value); }
         public final ObjectProperty<C> contentProperty() { return content; }
 
-        */
 /**
-         * The validator
-         *//*
+         * The validator*/
+
 
         private ObjectProperty<Validator<C>> validator = new SimpleObjectProperty<Validator<C>>(this, "validator");
         public final Validator<C> getValidator() { return validator.get(); }
         public final void setValidator(Validator<C> value) { validator.set(value); }
         public final ObjectProperty<Validator<C>> validatorProperty() { return validator; }
 
-        */
 /**
-         * The validation result
-         *//*
+         * The validation result*/
+
 
         private ReadOnlyObjectWrapper<ValidationResult> validationResult = new ReadOnlyObjectWrapper<ValidationResult>(this, "validationResult");
         public final ValidationResult getValidationResult() { return validationResult.get(); }
         public final ReadOnlyObjectProperty<ValidationResult> validationResultProperty() { return validationResult.getReadOnlyProperty(); }
 
-        */
 /**
-         *  The event handler
-         *//*
+         *  The event handler*/
+
 
         private ObjectProperty<EventHandler<ValidationEvent>> onValidation =
                 new SimpleObjectProperty<EventHandler<ValidationEvent>>(this, "onValidation");
@@ -257,4 +250,3 @@ public class TextValidatorSampleVARU extends Application {
     }
 
 }
-*/

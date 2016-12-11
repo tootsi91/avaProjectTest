@@ -30,8 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 .validation-error .text-field {
-    -fx-background-color: red;
-    -fx-text-fill: white;
+    -fx-background-color: lightcoral;
+    -fx-text-fill: black;
 }
 
 .validation-warning .text-field {

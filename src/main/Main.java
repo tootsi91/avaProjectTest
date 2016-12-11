@@ -17,6 +17,7 @@ import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Side;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -51,8 +52,6 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         primaryStage.setTitle("Java Web Crawler");
-        //Pane root = new Pane();
-
         init(primaryStage);
         primaryStage.show();
     }
@@ -64,6 +63,20 @@ public class Main extends Application {
         String validatorCss = Main.class.getResource("Validators.css").toExternalForm();
 
         VBox vbox = new VBox();
+
+
+        //Tab
+        BorderPane borderPane = new BorderPane();
+        final TabPane tabPane = new TabPane();
+        tabPane.setPrefSize(300, 40);
+        tabPane.setSide(Side.TOP);
+        tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+        final Tab tab1 = new Tab();
+        tab1.setText("Tab 1");
+        final Tab tab2 = new Tab();
+        tab2.setText("Tab 2");
+        tabPane.getTabs().addAll(tab1, tab2);
+        borderPane.setCenter(tabPane);
 
         Label grid1Caption = new Label("Info:");
         grid1Caption.setWrapText(true);
@@ -93,8 +106,9 @@ public class Main extends Application {
         GridPane.setHalignment(label, HPos.LEFT);
         content.add(label);
 
-        vbox.getChildren().addAll(grid1Caption, grid1);
+        vbox.getChildren().addAll(borderPane, grid1Caption, grid1);
 
+        //Text Box
         Label grid2Caption = new Label("Insert the name of the webpage you want to search below:");
         grid2Caption.setWrapText(true);
         TextField textBox = new TextField();
@@ -103,23 +117,12 @@ public class Main extends Application {
         pane.setValidator(new Validator<TextField>() {
             public ValidationResult validate(TextField control) {
                 try {String text = control.getText();
-                    if (text.toLowerCase().startsWith("http://"))
-                        return new ValidationResult("Valid Link", ValidationResult.Type.SUCCESS);
-                    else return new ValidationResult("Invalid Link", ValidationResult.Type.WARNING);
-
-
-/*                    if (text == null || text.trim().equals(""))
-                        return null;
-                    else if (text.contains(".pdf") || text.contains("@") || text.contains(".jpg"))
-                        return new ValidationResult("Invalid Link", ValidationResult.Type.WARNING);
+                    if (text == null || text.trim().equals("")) return null;
                     else if (text.toLowerCase().startsWith("http://"))
-                        return new ValidationResult("Valid Link", ValidationResult.Type.SUCCESS);*/
-/*                    String d = control.getText();
-                    if (text.contains(".pdf") || text.contains("@") || text.contains(".jpg") ||
-                            text.contains(".pdf")) {
+                        return new ValidationResult("Valid Link", ValidationResult.Type.SUCCESS);
+                    else if ((text.endsWith(".pdf") || text.contains("@") || text.endsWith(".jpg")))
                         return new ValidationResult("Invalid Link", ValidationResult.Type.WARNING);
-                    }*/
-                    //return null; // succeeded
+                    else return null;
                 } catch (Exception e) {
                     return new ValidationResult("Error", ValidationResult.Type.ERROR);
                 }
@@ -348,42 +351,6 @@ public class Main extends Application {
                 c.resizeRelocate(0, 0, getWidth(), getHeight());
             }
         }
-
-/*        @Override
-        protected double computeMaxHeight(double d) {
-            Control c = content.get();
-            return c == null ? super.computeMaxHeight(d) : c.maxHeight(d);
-        }
-
-        @Override
-        protected double computeMinHeight(double d) {
-            Control c = content.get();
-            return c == null ? super.computeMinHeight(d) : c.minHeight(d);
-        }
-
-        @Override
-        protected double computePrefHeight(double d) {
-            Control c = content.get();
-            return c == null ? super.computePrefHeight(d) : c.prefHeight(d);
-        }
-
-        @Override
-        protected double computePrefWidth(double d) {
-            Control c = content.get();
-            return c == null ? super.computePrefWidth(d) : c.prefWidth(d);
-        }
-
-        @Override
-        protected double computeMaxWidth(double d) {
-            Control c = content.get();
-            return c == null ? super.computeMaxWidth(d) : c.maxWidth(d);
-        }
-
-        @Override
-        protected double computeMinWidth(double d) {
-            Control c = content.get();
-            return c == null ? super.computeMinWidth(d) : c.minWidth(d);
-        }*/
     }
 
     private class TextInputValidatorPane<C extends TextInputControl> extends ValidatorPane<C> {
@@ -414,20 +381,6 @@ public class Main extends Application {
         }
 
     }
-
-/*    private URL verifyUrl(String url) {
-        // Only allow HTTP URLs.
-        if (!url.toLowerCase().startsWith("http://"))
-            return null;
-        // Verify format of URL.
-        URL verifiedUrl = null;
-        try {
-            verifiedUrl = new URL(url);
-        } catch (Exception e) {
-            return null;
-        }
-        return verifiedUrl;
-    }*/
 
     //Search string
 /*    public static boolean checkExist(String s, File fin) throws IOException {
