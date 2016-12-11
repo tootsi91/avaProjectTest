@@ -1,3 +1,4 @@
+/*
 package main.Tests.CrawlerExamples.Working.Crawler;
 
 public class TestCrawler6{
@@ -43,3 +44,4 @@ public class TestCrawler6{
     }
 }
 
+*/

@@ -23,6 +23,8 @@ public class FileCrawler {
         out.newLine();
         out.close();
 
+        System.out.println("Please insert link:");
+
         processPage("http://www.neti.ee");
 
         File file = new File(loc);

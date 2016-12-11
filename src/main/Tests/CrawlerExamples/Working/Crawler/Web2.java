@@ -1,3 +1,4 @@
+/*
 package main.Tests.CrawlerExamples.Working.Crawler;
 
 import java.io.BufferedReader;
@@ -19,3 +20,4 @@ class Web2 {
         return webpage;
     }
 }
+*/

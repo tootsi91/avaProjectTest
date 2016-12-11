@@ -1,11 +1,13 @@
-package main.Tests.Test;
+package main;
 
-public class CrawlerM {
+import main.Tests.GUIexamples.JavaFX.TextValidatorSampleVARU;
+
+public class Crawler {
 
     public static void main(String[] args) throws Exception{
 
         String urls[] = new String[1000];
-        String url = "http://www.google.ee";
+        String url = "www.neti.ee";
         int i=0,j=0,tmp=0,total=0, MAX = 1000;
         int start=0, end=0;
         String webpage = Web.getWeb(url);
